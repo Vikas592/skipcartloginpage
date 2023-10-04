@@ -8,9 +8,12 @@
 }
 .login-form {
   width: 500px;
-  height: 400px;
   text-align: center !important;
   background-color: lightgrey;
+}
+.login-input {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .login-header {
   background-color: #1b75bc;

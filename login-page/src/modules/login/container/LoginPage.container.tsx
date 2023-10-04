@@ -25,7 +25,6 @@ const LoginPage = () => {
 
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  console.log({ loggedIn })
   const dispatch = useDispatch();
   const onSubmit = async (e: any) => {
     if (getValues().email && getValues().password) {
@@ -56,7 +55,6 @@ const LoginPage = () => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      console.log(res)
       if (res.success) {
         //reroute to login success
         dispatch(loginActions.loginSuccess());
@@ -95,7 +93,7 @@ const LoginPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (loading ? <h1>Loading...</h1> :
+  return (loading ? <h1>Loading...</h1> :<>
     <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
       <header className="login-header">SIGN IN</header>
       <div className="login-body">
@@ -138,14 +136,20 @@ const LoginPage = () => {
         <button className="login-btn" type="submit">
           Login
         </button>
-        <Link to="/forgotPassword"> Trouble Logging in?</Link>
-        {loginFailed && (
-          <div className="wrong-pwd">
-            Your username or password is wrong. Please try again
-          </div>
-        )}
+        <div className="login-input">
+
+        <Link to={"/forgotPassword"} style={{ textDecoration: 'none' }}>Trouble Logging in?</Link>
+        </div>
+    {loginFailed && (
+      <div className="wrong-pwd login-input">
+        Your username or password is wrong. Please try again
+      </div>
+  )
+  }
       </div>
     </form>
+   
+  </>
   );
 };
 
