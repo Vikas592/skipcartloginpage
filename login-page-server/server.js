@@ -15,7 +15,7 @@ app.post("/login", (req, res) => {
   const { email, password, token } = req.body
   if (!credentials.length) {
     res.status(500)
-   return res.json({ error: "Something went wrong!" })
+    return res.json({ error: "Something went wrong!" })
   }
 
   for (let i = 0; i < credentials.length; i++) {
@@ -27,7 +27,7 @@ app.post("/login", (req, res) => {
       if (token) {
         tokens.push(token)
       }
-  return res.json({ success: true })
+      return res.json({ success: true })
     }
   }
   res.status(400)
@@ -38,20 +38,20 @@ app.post("/logout", (req, res) => {
   const { token } = req.body
   tokens = tokens.filter((t) => t !== token)
   res.status(200)
-  return res.json({success: true })
+  return res.json({ success: true })
 })
 
 app.post("/rememberme", (req, res) => {
   const { token } = req.body
-  console.log({tokens, token})
+  console.log({ tokens, token })
   if (tokens.includes(token)) {
     res.status(200)
-   return res.json({ success: true })
+    return res.json({ success: true })
   } else {
     res.status(400)
     return res.json({ error: true })
   }
 })
-app.listen(process.env.PORT, () =>
-  console.log(`Server Started on ${process.env.PORT}`)
+app.listen(process.env.PORT || 4000, () =>
+  console.log(`Server Started on ${process.env.PORT || 4000}`)
 )

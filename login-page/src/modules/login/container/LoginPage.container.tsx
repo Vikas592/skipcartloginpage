@@ -89,7 +89,7 @@ const LoginPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (loading ? <h1>Loading...</h1> :
+  return (loading ? <h1>Loading...</h1> :<>
     <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
       <header className="login-header">SIGN IN</header>
       <div className="login-body">
@@ -135,14 +135,20 @@ const LoginPage = () => {
         <button className="login-btn" type="submit">
           Login
         </button>
-        <Link to="/forgotPassword"> Trouble Logging in?</Link>
-        {loginFailed && (
-          <div className="wrong-pwd">
-            Your username or password is wrong. Please try again
-          </div>
-        )}
+        <div className="login-input">
+
+        <Link to={"/forgotPassword"} style={{ textDecoration: 'none' }}>Trouble Logging in?</Link>
+        </div>
+    {loginFailed && (
+      <div className="wrong-pwd login-input">
+        Your username or password is wrong. Please try again
+      </div>
+  )
+  }
       </div>
     </form>
+   
+  </>
   );
 };
 
