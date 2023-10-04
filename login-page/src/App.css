@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+}
+.login-form {
+  width: 500px;
+  height: 400px;
+  text-align: center !important;
+  background-color: lightgrey;
+}
+.login-header {
+  background-color: #1b75bc;
+  color: #ffffff;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #ededed;
+  border-radius: 5px 5px 0 0;
+}
+.login-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 30px;
+}
+.email,
+.password {
+  margin-top: 20px;
+  font-size: 14px;
+}
+.email-input,
+.password-input {
+  margin-top: 20px;
+  width: 400px;
+  height: 30px;
+}
+.remember-checbox {
+  font-size: 200px;
+}
+
+.login-btn {
+  margin-top: 50px;
+  width: 400px;
+}
+.login-btn {
+  background-color: #1b75bc;
+  color: #ffffff;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #1b75bc;
+  border-radius: 5px;
+}
+.wrong-pwd {
+  background-color: red;
+  color: #ffffff;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 14px;
+  border: 1px solid red;
+  border-radius: 5px;
+}
