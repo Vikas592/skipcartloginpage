@@ -8,10 +8,9 @@ function Order() {
   const history = useHistory();
   const logout = async () => {
     try {
-      const response = await customAxios.post("http://localhost:4000/logout", {
+      const res:any = await customAxios.post("/logout", {
         token: localStorage.getItem("token"),
       });
-      const res = response.data;
       if (res.success) {
         dispatch(loginActions.loginSuccess());
       }

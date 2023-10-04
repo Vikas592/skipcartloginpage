@@ -52,8 +52,7 @@ const LoginPage = () => {
       };
       try {
 
-        const response = await customAxios.post("/login", data);
-        const res = response.data;
+        const res:any = await customAxios.post("/login", data);
         if (res.success) {
           dispatch(loginActions.loginSuccess());
         }
@@ -71,10 +70,9 @@ const LoginPage = () => {
   const rememberMe = async () => {
     setLoading(true);
     try {
-      const response = await customAxios.post("/rememberme", {
+      const res:any = await customAxios.post("/rememberme", {
         token: localStorage.getItem("token"),
       });
-      const res = response.data;
       if (res.success) {
         dispatch(loginActions.loginSuccess());
       }
