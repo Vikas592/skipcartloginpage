@@ -1,17 +1,16 @@
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { loginActions } from "../../slices/loginSlice/loginslice";
-import customAxios from "../../axios";
+import { logoutThunk } from "../../slices/loginSlice/loginSlice.thunk";
+import { useAppDispatch } from "../../loginstore/store";
 
 function Order() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const logout = async () => {
     try {
-      const response = await customAxios.post("http://localhost:4000/logout", {
-        token: localStorage.getItem("token"),
-      });
-      const res = response.data;
+      const res = await dispatch(logoutThunk({
+        token: localStorage.getItem("token")
+      })).unwrap();
       if (res.success) {
         dispatch(loginActions.loginSuccess());
       }

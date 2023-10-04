@@ -7,11 +7,13 @@ import { LoginPageInput } from "../../../types/LoginPage";
 
 import { loginActions } from "../../../slices/loginSlice/loginslice";
 import customAxios from "../../../axios";
+import { loginThunk, rememberMeThunk } from "../../../slices/loginSlice/loginSlice.thunk";
+import { useAppDispatch } from "../../../loginstore/store";
 
 const LoginPage = () => {
   const [loginFailed, setLoginFailed] = useState(false);
   const [rememberme, setRememberme] = useState(false);
-  const loggedIn = useSelector((state: any) => state.login.loggedIn);
+  const { loggedIn, rememberMeLoading } = useSelector((state: any) => state.login);
   const {
     register,
     handleSubmit,
@@ -25,8 +27,7 @@ const LoginPage = () => {
   });
 
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmit = async (e: any) => {
     const { email, password } = getValues();
@@ -51,12 +52,9 @@ const LoginPage = () => {
         token: rememberme ? localStorage.getItem("token") : null,
       };
       try {
-
-        const response = await customAxios.post("/login", data);
-        const res = response.data;
-        if (res.success) {
-          dispatch(loginActions.loginSuccess());
-        }
+        const response = await dispatch(loginThunk(data)).unwrap();
+        if (!response.success)
+          setLoginFailed(true);
       }
       catch (error: any) {
         setLoginFailed(true);
@@ -68,28 +66,12 @@ const LoginPage = () => {
     if (loggedIn) history.push("/Order");
   }, [loggedIn, history]);
 
-  const rememberMe = async () => {
-    setLoading(true);
-    try {
-      const response = await customAxios.post("/rememberme", {
-        token: localStorage.getItem("token"),
-      });
-      const res = response.data;
-      if (res.success) {
-        dispatch(loginActions.loginSuccess());
-      }
-    }
-    catch (error: any) {
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    rememberMe();
+    dispatch(rememberMeThunk(localStorage.getItem("token")));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (loading ? <h1>Loading...</h1> :
+  return (rememberMeLoading ? <h1>Loading...</h1> :
     <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
       <header className="login-header">SIGN IN</header>
       <div className="login-body">
