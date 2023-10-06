@@ -7,9 +7,9 @@ function RouterComponent() {
   return (
     <Router>
       <Switch>
-        <Route path="/order" ><Order /> </Route>
-        <Route path="/" ><LoginPage /> </Route>
-        <Route path="/forgotPassword" ><ForgotPassword /> </Route>
+        <Route exact path="/order" ><Order /> </Route>
+        <Route exact path="/forgotPassword" ><ForgotPassword /> </Route>
+        <Route exact path="/" ><LoginPage /> </Route>
       </Switch>
     </Router>
   );

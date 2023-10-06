@@ -117,14 +117,20 @@ const LoginPage = () => {
         <button className="login-btn" type="submit">
           Login
         </button>
-        <Link to="/forgotPassword"> Trouble Logging in?</Link>
+        <div className="login-input">
+
+          <Link to={"/forgotPassword"} style={{ textDecoration: 'none' }}>Trouble Logging in?</Link>
+        </div>
         {loginFailed && (
-          <div className="wrong-pwd">
+          <div className="wrong-pwd login-input">
             Your username or password is wrong. Please try again
           </div>
-        )}
+        )
+        }
       </div>
     </form>
+   
+  </>
   );
 };
 
