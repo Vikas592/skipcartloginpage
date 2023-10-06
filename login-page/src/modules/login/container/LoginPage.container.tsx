@@ -5,7 +5,8 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginPageInput } from "../../../types/LoginPage";
 
-import { loginActions } from "../../../slices/loginslice";
+import { loginActions } from "../../../slices/loginSlice/loginslice";
+import customAxios from "../../../axios";
 
 const LoginPage = () => {
   const [loginFailed, setLoginFailed] = useState(false);
@@ -26,39 +27,37 @@ const LoginPage = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const onSubmit = async (e: any) => {
-    if (getValues().email && getValues().password) {
-      dispatch(loginActions.updateEmail(getValues().email));
 
-      dispatch(loginActions.updatePassword(getValues().password));
+  const onSubmit = async (e: any) => {
+    const { email, password } = getValues();
+    if (email && password) {
+
+      dispatch(loginActions.updateEmail(email));
+      dispatch(loginActions.updatePassword(password));
 
       setLoginFailed(false);
       if (rememberme) {
         localStorage.setItem(
           "token",
           JSON.stringify({
-            email: getValues().email,
-            password: getValues().password,
+            email,
+            password,
           })
         );
       }
       const data = {
-        email: getValues().email,
-        password: getValues().password,
+        email,
+        password,
         token: rememberme ? localStorage.getItem("token") : null,
+      };
+      try {
+
+        const res:any = await customAxios.post("/login", data);
+        if (res.success) {
+          dispatch(loginActions.loginSuccess());
+        }
       }
-      const response = await fetch("http://localhost:4000/login", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(data),
-      });
-      const res = await response.json();
-      if (res.success) {
-        //reroute to login success
-        dispatch(loginActions.loginSuccess());
-      } else {
+      catch (error: any) {
         setLoginFailed(true);
       }
     }
@@ -70,22 +69,17 @@ const LoginPage = () => {
 
   const rememberMe = async () => {
     setLoading(true);
-    const response = await fetch("http://localhost:4000/rememberme", {
-      method: "POST",
-      headers: {
-        "content-type": 'application/json'
-      },
-      body: JSON.stringify({
+    try {
+      const res:any = await customAxios.post("/rememberme", {
         token: localStorage.getItem("token"),
-      }),
-    });
-
-    const res = await response.json();
-    setLoading(false);
-
-    if (res.success) {
-      dispatch(loginActions.loginSuccess());
+      });
+      if (res.success) {
+        dispatch(loginActions.loginSuccess());
+      }
     }
+    catch (error: any) {
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -125,14 +119,17 @@ const LoginPage = () => {
         />
 
         {errors.password && <span>This field is required</span>}
+        <div className="flex mg-5">
+          <input
+            type="checkbox"
+            checked={rememberme}
+            onChange={() => setRememberme(!rememberme)}
+            className="remember-checbox"
+            name='rememberMe'
+          />
+          <label htmlFor="rememberMe">Remember me</label>
+        </div>
 
-        <input
-          type="checkbox"
-          checked={rememberme}
-          onChange={() => setRememberme(!rememberme)}
-          className="remember-checbox"
-        />
-        <span>remember me</span>
         <button className="login-btn" type="submit">
           Login
         </button>

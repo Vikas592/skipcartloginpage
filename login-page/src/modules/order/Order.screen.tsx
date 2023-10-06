@@ -1,33 +1,29 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { loginActions } from "../../slices/loginslice";
+import { loginActions } from "../../slices/loginSlice/loginslice";
+import customAxios from "../../axios";
 
 function Order() {
   const dispatch = useDispatch();
   const history = useHistory();
   const logout = async () => {
-    const response = await fetch("http://localhost:4000/logout", {
-      method: "POST",
-
-      body: JSON.stringify({
+    try {
+      const res:any = await customAxios.post("/logout", {
         token: localStorage.getItem("token"),
-      }),
-    });
-
-    const res = await response.json();
-
-    if (res.success) {
-      dispatch(loginActions.loginSuccess());
+      });
+      if (res.success) {
+        dispatch(loginActions.loginSuccess());
+      }
+    } catch (error) {
     }
     localStorage.removeItem("token");
-    history.replace('/')
+    history.replace('/');
   };
   return (
     <div>
       login Successful
       <button onClick={logout}>
-        logOut
+        LogOut
       </button>
     </div>
   );

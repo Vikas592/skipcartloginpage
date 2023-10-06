@@ -6,6 +6,13 @@
   width: 100vw;
   height: 80vh;
 }
+
+.flex{
+  display: flex;
+}
+.mg-5{
+  margin: 5px;
+}
 .login-form {
   width: 500px;
   text-align: center !important;
