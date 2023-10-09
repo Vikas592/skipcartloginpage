@@ -1,10 +1,13 @@
 import "./App.css";
 import Routes from "./RouterComponent";
+import Provider from "./graphql/provider";
 
 function App() {
   return (
     <div className="App">
-      <Routes />
+      <Provider>
+        <Routes />
+      </Provider>
     </div>
   );
 }
