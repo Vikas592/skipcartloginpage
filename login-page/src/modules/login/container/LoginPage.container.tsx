@@ -65,9 +65,10 @@ const LoginPage = () => {
   if (loginError) {
     setLoginFailed(true);
   }
-  useEffect(() => {
-    if (data?.login?.user?.userId) history.push("/Order");
-  }, [data, history]);
+  if (data?.login?.user?.userId) {
+    localStorage.setItem("token", JSON.stringify(data?.login?.token));
+    history.push("/Order");
+  }
 
   useEffect(() => {
     dispatch(rememberMeThunk(localStorage.getItem("token")));
